@@ -1,9 +1,8 @@
-
 import * as React from 'react';
+import './index.css';
 
 function Board() {
   const [squares, setSquares] = React.useState(Array(9).fill(null));
-  
   const nextValue = calculateNextValue(squares);
   const winner = calculateWinner(squares);
   const status = calculateStatus(winner, squares, nextValue);
@@ -23,33 +22,38 @@ function Board() {
 
   function renderSquare(i) {
     return (
-      <button className="square" onClick={() => selectSquare(i)}>
+      <button
+        className="w-16 h-16 border-2 border-gray-500 flex items-center justify-center text-2xl"
+        onClick={() => selectSquare(i)}
+      >
         {squares[i]}
       </button>
     );
   }
 
   return (
-    <div>
-      <div >STATUS</div>
-      <div >{status}</div>
-      <div >
+    <div className="flex flex-col items-center">
+      <div className="status mb-4 text-xl">{status}</div>
+      <div className="board-row flex">
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
       </div>
-      <div > 
+      <div className="board-row flex">
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
       </div>
-      <div >
+      <div className="board-row flex">
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
       </div>
-      <button onClick={restart}>
-        restart
+      <button
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+        onClick={restart}
+      >
+        Restart
       </button>
     </div>
   );
@@ -57,29 +61,29 @@ function Board() {
 
 function Game() {
   return (
-    <div >
-      <div >
-        <Board />
-      </div>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Board />
     </div>
   );
 }
 
-// eslint-disable-next-line no-unused-vars
+
 function calculateStatus(winner, squares, nextValue) {
   return winner
     ? `Winner: ${winner}`
     : squares.every(Boolean)
-      ? `Scratch: Cat's game`
-      : `Next player: ${nextValue}`;
+    ? `Scratch: Cat's game`
+    : `Next player: ${nextValue}`;
 }
 
-// eslint-disable-next-line no-unused-vars
+
 function calculateNextValue(squares) {
-  return squares.filter(Boolean).length % 2 === 0 ? 'X' : 'O';
+  const xCount = squares.filter(r => r === 'X').length;
+  const oCount = squares.filter(r => r === 'O').length;
+  return xCount === oCount ? 'X' : 'O';
 }
 
-// eslint-disable-next-line no-unused-vars
+
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -99,6 +103,7 @@ function calculateWinner(squares) {
   }
   return null;
 }
+
 
 function App() {
   return <Game />;
