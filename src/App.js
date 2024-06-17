@@ -2,12 +2,23 @@
 import * as React from 'react';
 
 function Board() {
-  const squares = Array(9).fill(null);
-  function selectSquare(square) {
+  const [squares, setSquares] = React.useState(Array(9).fill(null));
+  
+  const nextValue = calculateNextValue(squares);
+  const winner = calculateWinner(squares);
+  const status = calculateStatus(winner, squares, nextValue);
 
+  function selectSquare(square) {
+    if (winner || squares[square]) {
+      return;
+    }
+    const nextSquares = squares.slice();
+    nextSquares[square] = nextValue;
+    setSquares(nextSquares);
   }
 
   function restart() {
+    setSquares(Array(9).fill(null));
   }
 
   function renderSquare(i) {
@@ -21,12 +32,13 @@ function Board() {
   return (
     <div>
       <div >STATUS</div>
+      <div >{status}</div>
       <div >
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
       </div>
-      <div >
+      <div > 
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
